@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WhatStat - Chat Analyzer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#bbcbb9",
+                    "surface-dim": "#131313",
+                    "outline": "#869584",
+                    "on-error": "#690005",
+                    "on-secondary-container": "#b4b5b5",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-tint": "#3de273",
+                    "surface-container-low": "#1c1b1b",
+                    "on-primary": "#003915",
+                    "surface-container": "#201f1f",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-container-high": "#2a2a2a",
+                    "error-container": "#93000a",
+                    "secondary": "#c6c6c7",
+                    "surface-container-highest": "#353534",
+                    "background": "#131313",
+                    "tertiary": "#d4d3d3",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-primary-fixed": "#002109",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-secondary": "#2f3131",
+                    "primary": "#4ff07f",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-tertiary-container": "#484949",
+                    "primary-container": "#25d366",
+                    "surface": "#131313",
+                    "on-primary-container": "#005523",
+                    "on-tertiary-fixed-variant": "#464747",
+                    "tertiary-container": "#b8b8b8",
+                    "primary-fixed-dim": "#3de273",
+                    "on-tertiary": "#303031",
+                    "on-surface": "#e5e2e1",
+                    "secondary-container": "#454747",
+                    "primary-fixed": "#66ff8e",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "on-primary-fixed-variant": "#005322",
+                    "inverse-on-surface": "#313030",
+                    "inverse-primary": "#006d2f",
+                    "on-background": "#e5e2e1",
+                    "inverse-surface": "#e5e2e1",
+                    "outline-variant": "#3c4a3d",
+                    "tertiary-fixed": "#e3e2e2",
+                    "surface-bright": "#3a3939",
+                    "surface-variant": "#353534",
+                    "tertiary-fixed-dim": "#c7c6c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "stack-xl": "128px",
+                    "margin-mobile": "24px",
+                    "margin-page": "64px",
+                    "gutter": "32px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Geist"
+                    ],
+                    "label-caps": [
+                            "Geist"
+                    ],
+                    "body-md": [
+                            "Geist"
+                    ],
+                    "headline-xl": [
+                            "Geist"
+                    ],
+                    "display-lg": [
+                            "Geist"
+                    ],
+                    "display-lg-mobile": [
+                            "Geist"
+                    ],
+                    "body-lg": [
+                            "Geist"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-xl": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "72px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.04em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #050505; color: #e5e2e1; }
+        .card-bg { background-color: #131313; border: 1px solid #1F1F1F; }
+        .glow-effect:hover { box-shadow: 0 0 15px rgba(37, 211, 102, 0.1); }
+        
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .chart-container-large { position: relative; height: 460px; width: 100%; }
+        .emoji-glyph { font-family: "Noto Color Emoji", "Segoe UI Emoji", "Apple Color Emoji", sans-serif; }
+        
+        /* Heatmap styles */
+        .heatmap-grid { display: grid; grid-template-columns: auto repeat(24, 1fr); gap: 2px; }
+        .heatmap-cell { aspect-ratio: 1; border-radius: 2px; }
+        .heatmap-cell-0 { background-color: #1c1b1b; }
+        .heatmap-cell-1 { background-color: rgba(37, 211, 102, 0.2); }
+        .heatmap-cell-2 { background-color: rgba(37, 211, 102, 0.4); }
+        .heatmap-cell-3 { background-color: rgba(37, 211, 102, 0.6); }
+        .heatmap-cell-4 { background-color: rgba(37, 211, 102, 0.8); }
+        .heatmap-cell-5 { background-color: rgba(37, 211, 102, 1); }
+    </style>
+</head>
+<body class="font-body-md antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-background docked full-width top-0 sticky border-b border-outline-variant flat no shadows z-50">
+<div class="flex justify-between items-center px-margin-page h-16 w-full max-w-container-max mx-auto z-50">
+<a href="/" aria-label="WhatStat home" class="flex items-center gap-4 hover:opacity-90 transition-opacity">
+
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">WHATSTAT</span>
+</a>
+<div class="hidden md:flex items-center gap-8">
+
+
+
+
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+<button id="analyzeAnotherChatTopBtn" type="button" class="hidden md:flex bg-primary-container text-on-primary-container px-4 py-2 rounded font-label-caps text-label-caps hover:bg-primary transition-colors">Analyze another chat</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-gutter space-y-stack-xl">
+<!-- Header Section -->
+<header class="space-y-4 pt-12">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Your conversation, decoded.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">WhatsApp Chat Analysis</p>
+<div class="flex flex-wrap gap-4 pt-6">
+<div class="card-bg px-4 py-2 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">group</span>
+<span id="chatType" class="font-label-caps text-label-caps text-on-surface">WhatsApp Chat</span>
+</div>
+<div class="card-bg px-4 py-2 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">calendar_month</span>
+<span id="dateRange" class="font-label-caps text-label-caps text-on-surface">—</span>
+</div>
+<div class="card-bg px-4 py-2 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">person</span>
+<span id="participantCount" class="font-label-caps text-label-caps text-on-surface">—</span>
+</div>
+</div>
+</header>
+<!-- User Selector -->
+<section class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-8 border-t border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ANALYSIS FOR</span>
+<select id="userSelector" class="bg-surface-container-low border-outline-variant text-on-surface rounded px-4 py-2 font-body-md focus:ring-primary-container focus:border-primary-container outline-none"></select>
+</div>
+<div class="flex items-center gap-2 text-primary-container opacity-80">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span id="viewingText" class="font-label-caps text-label-caps">Viewing overall insights</span>
+</div>
+</section>
+<!-- Key Stats -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="card-bg p-6 rounded-lg glow-effect transition-shadow flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Messages</span>
+<span id="statMessages" class="font-headline-xl text-headline-xl text-on-surface">—</span>
+</div>
+<div class="card-bg p-6 rounded-lg glow-effect transition-shadow flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Words</span>
+<span id="statWords" class="font-headline-xl text-headline-xl text-on-surface">—</span>
+</div>
+<div class="card-bg p-6 rounded-lg glow-effect transition-shadow flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Media Shared</span>
+<span id="statMedia" class="font-headline-xl text-headline-xl text-on-surface">—</span>
+</div>
+<div class="card-bg p-6 rounded-lg glow-effect transition-shadow flex flex-col justify-between h-32">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Links Shared</span>
+<span id="statLinks" class="font-headline-xl text-headline-xl text-on-surface">—</span>
+</div>
+</section>
+<!-- 1. CONVERSATION ACTIVITY -->
+<section class="space-y-6">
+<div class="space-y-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">Conversation Activity</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">See how your conversation changes over time.</p>
+</div>
+<div class="card-bg p-6 rounded-lg space-y-8">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Monthly Timeline</h3>
+<div class="chart-container">
+<canvas id="monthlyChart"></canvas>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-8">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Daily Timeline</h3>
+<div class="chart-container">
+<canvas id="dailyChart"></canvas>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. ACTIVITY MAP -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Activity Map</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="card-bg p-6 rounded-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Most Busy Day</h3>
+<div class="chart-container">
+<canvas id="busyDayChart"></canvas>
+</div>
+</div>
+<div class="card-bg p-6 rounded-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Most Busy Month</h3>
+<div class="chart-container">
+<canvas id="busyMonthChart"></canvas>
+</div>
+</div>
+</div>
+<div class="card-bg p-6 rounded-lg mt-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Most Busy Users</h3>
+<div class="chart-container">
+<canvas id="busyUsersChart"></canvas>
+</div>
+</div>
+</section>
+<!-- 3. EMOJI ANALYSIS -->
+<section class="space-y-6">
+    <h2 class="font-headline-md text-headline-md text-on-surface">
+        Emoji Analysis
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+
+        <!-- LEFT: TOP EMOJIS -->
+        <div class="card-bg p-6 rounded-lg">
+            <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">
+                Top Emojis
+            </h3>
+
+            <div id="emojiList" class="space-y-4">
+                <!-- Filled dynamically -->
+            </div>
+        </div>
+
+        <!-- RIGHT: PIE CHART -->
+        <div class="card-bg p-6 rounded-lg flex flex-col min-h-[500px]">
+            <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">
+                Emoji Distribution
+            </h3>
+
+            <div class="flex-1 min-h-[400px] flex items-center justify-center">
+                <canvas id="emojiDonutChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- 4. WORD ANALYSIS -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Word Analysis</h2>
+<div class="card-bg p-6 rounded-lg mb-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Word Cloud</h3>
+<div class="flex justify-center items-center h-[620px] md:h-[720px] bg-surface-container-low rounded p-6 overflow-hidden">
+<img id="wordcloudImage" class="max-h-full max-w-full w-full object-contain rounded" alt="Word cloud" style="display:none;">
+<p id="wordcloudEmpty" class="text-center text-on-surface-variant italic">Word cloud will appear here after analysis.</p>
+</div>
+</div>
+<div class="card-bg p-6 rounded-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Most Common Words</h3>
+<div class="chart-container-large">
+<canvas id="commonWordsChart"></canvas>
+</div>
+</div>
+</section>
+<!-- 5. WHEN ARE YOU MOST ACTIVE? -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">When Are You Most Active?</h2>
+<div class="card-bg p-6 rounded-lg space-y-8">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Activity Heatmap</h3>
+<div class="overflow-x-auto">
+<div id="heatmapGrid" class="heatmap-grid min-w-[800px]">
+<!-- Empty top-left cell -->
+<div class="p-2"></div>
+<!-- Hour headers -->
+<script>
+                     for(let i=0; i<24; i++) {
+                         document.write(`<div class="text-xs text-on-surface-variant text-center">${i}</div>`);
+                     }
+                 </script>
+<!-- Days rows -->
+<script>
+                     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                     days.forEach(day => {
+                         document.write(`<div class="text-xs text-on-surface-variant text-right pr-2 self-center">${day}</div>`);
+                         for(let i=0; i<24; i++) {
+                             // Randomly assign heat level 0-5
+                             const heat = Math.floor(Math.random() * 6);
+                             document.write(`<div class="heatmap-cell heatmap-cell-${heat} m-0.5"></div>`);
+                         }
+                     });
+                 </script>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 border-t border-outline-variant pt-6">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">MOST ACTIVE DAY</span>
+<span id="mostActiveDay" class="font-headline-md text-headline-md text-primary">—</span>
+</div>
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">MOST ACTIVE HOUR</span>
+<span id="mostActiveHour" class="font-headline-md text-headline-md text-primary">—</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. SHARED BEYOND WORDS -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Shared Beyond Words</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="card-bg p-6 rounded-lg flex items-center gap-6">
+<div class="bg-surface-container p-4 rounded-full">
+<span class="material-symbols-outlined text-4xl text-primary">image</span>
+</div>
+<div>
+<span id="mediaSharedBottom" class="font-headline-xl text-headline-xl text-on-surface block">—</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MEDIA FILES SHARED</span>
+</div>
+</div>
+<div class="card-bg p-6 rounded-lg flex items-center gap-6">
+<div class="bg-surface-container p-4 rounded-full">
+<span class="material-symbols-outlined text-4xl text-primary">link</span>
+</div>
+<div>
+<span id="linksSharedBottom" class="font-headline-xl text-headline-xl text-on-surface block">—</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LINKS SHARED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Insights -->
+<section class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Key Takeaways</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="card-bg p-6 rounded-lg border-l-4 border-l-primary-container">
+<span class="material-symbols-outlined text-primary-container mb-4 block">redeem</span>
+<p id="takeawayUser" class="font-body-lg text-body-lg text-on-surface"><strong>—</strong></p>
+</div>
+<div class="card-bg p-6 rounded-lg border-l-4 border-l-primary-container">
+<span class="material-symbols-outlined text-primary-container mb-4 block">schedule</span>
+<p id="takeawayActivity" class="font-body-lg text-body-lg text-on-surface">Activity timing is not available.</p>
+</div>
+<div class="card-bg p-6 rounded-lg border-l-4 border-l-primary-container">
+<span class="material-symbols-outlined text-primary-container mb-4 block">mood</span>
+<p id="takeawayEmoji" class="font-body-lg text-body-lg text-on-surface">No emoji data available.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-dim dark:bg-surface-dim full-width py-stack-xl border-t border-outline-variant flat no shadows mt-stack-xl">
+<div class="flex flex-col items-center justify-center space-y-4 w-full px-margin-page max-w-container-max mx-auto">
+<span class="font-headline-md text-headline-md text-on-surface">WhatStat</span>
+<div class="flex gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors opacity-80 hover:opacity-100" href="#">Documentation</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors opacity-80 hover:opacity-100" href="#">Support</a>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-60">© 2024 WhatStat Analysis Labs. Privacy first architecture.</p>
+<div class="pt-8">
+<button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-label-caps text-label-caps hover:bg-primary transition-colors flex items-center gap-2"
+id = "analyzeAnotherChatBtn"
+type="button">
+                    Analyze another chat
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+<script>
+(() => {
+    Chart.defaults.color = '#869584';
+    Chart.defaults.borderColor = '#1F1F1F';
+    Chart.defaults.font.family = 'Geist, sans-serif';
+
+    const primaryColor = '#25d366';
+    const primaryColorTransparent = 'rgba(37, 211, 102, 0.1)';
+    const surfaceVariant = '#353534';
+
+    const $ = (id) => document.getElementById(id);
+    const charts = {};
+
+    function formatNumber(value) {
+        return Number(value || 0).toLocaleString('en-IN');
+    }
+
+    function getAnalysisId() {
+    const params = new URLSearchParams(window.location.search);
+
+    return params.get('analysis_id')
+        || params.get('id')
+        || localStorage.getItem('whatstat_analysis_id')
+        || sessionStorage.getItem('whatstat_analysis_id');
+    }
+
+    async function loadAnalysis(user = 'Overall') {
+        const analysisId = getAnalysisId();
+
+        if (!analysisId) {
+            showError(
+                'No analysis session found. Please upload your WhatsApp .txt file again from the analyzer page.'
+            );
+            return;
+        }
+
+        try {
+            const url = `/api/analyze/${encodeURIComponent(analysisId)}?user=${encodeURIComponent(user)}`;
+            const response = await fetch(url, { cache: 'no-store' });
+            const data = await response.json();
+
+            if (!response.ok || data.error) {
+                throw new Error(data.error || `Analysis Failed`);
+            }
+            
+
+            renderAnalysis(data);
+        } catch (error) {
+            console.error('WhatStat analysis load failed:', error);
+            showError(`Could not load analysis: ${error.message}`);
+        }
+    }
+    document.querySelectorAll(
+        '#analyzeAnotherChatBtn, #analyzeAnotherChatTopBtn'
+    ).forEach(button => {
+        button.addEventListener('click', () => {
+            window.location.assign('/');
+        });
+    });
+
+    function showError(message) {
+        let box = $('analysisError');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'analysisError';
+            box.className = 'mx-auto max-w-container-max px-margin-mobile md:px-margin-page py-4';
+            document.querySelector('main')?.prepend(box);
+        }
+        box.innerHTML = `
+            <div class="card-bg p-4 rounded-lg border border-red-900 text-red-300">
+                ${message}
+            </div>`;
+    }
+
+    function renderAnalysis(data) {
+        $('statMessages').textContent = formatNumber(data.stats.messages);
+        $('statWords').textContent = formatNumber(data.stats.words);
+        $('statMedia').textContent = formatNumber(data.stats.media);
+        $('statLinks').textContent = formatNumber(data.stats.links);
+        $('mediaSharedBottom').textContent = formatNumber(data.stats.media);
+        $('linksSharedBottom').textContent = formatNumber(data.stats.links);
+
+        const selectedUser = data.selected_user || 'Overall';
+        $('viewingText').textContent =
+            selectedUser === 'Overall'
+                ? 'Viewing overall insights'
+                : `Viewing ${selectedUser}'s insights`;
+
+        renderCharts(data);
+        renderEmojis(data.emojis || []);
+        renderWordCloud(data.wordcloud);
+        renderHeatmap(data);
+        renderTakeaways(data);
+    }
+
+    function destroyChart(id) {
+        if (charts[id]) {
+            charts[id].destroy();
+            delete charts[id];
+        }
+    }
+
+    function makeChart(id, config) {
+        destroyChart(id);
+        charts[id] = new Chart($(id), config);
+    }
+
+    const baseOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+    };
+
+    function renderCharts(data) {
+        const monthly = data.monthly_timeline || [];
+        makeChart('monthlyChart', {
+            type: 'line',
+            data: {
+                labels: monthly.map(x => x.time),
+                datasets: [{
+                    label: 'Messages',
+                    data: monthly.map(x => x.message),
+                    borderColor: primaryColor,
+                    backgroundColor: primaryColorTransparent,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: primaryColor,
+                    pointRadius: 3
+                }]
+            },
+            options: baseOptions
+        });
+    
+
+        const daily = data.daily_timeline || [];
+        makeChart('dailyChart', {
+            type: 'line',
+            data: {
+                labels: daily.map(x => String(x.only_date)),
+                datasets: [{
+                    label: 'Messages',
+                    data: daily.map(x => x.message),
+                    borderColor: primaryColor,
+                    borderWidth: 1.5,
+                    fill: false,
+                    tension: 0.15,
+                    pointRadius: 0
+                }]
+            },
+            options: baseOptions
+        });
+
+        const busyDay = data.busy_day || [];
+        makeChart('busyDayChart', {
+            type: 'bar',
+            data: {
+                labels: busyDay.map(x => x.day_name),
+                datasets: [{
+                    label: 'Messages',
+                    data: busyDay.map(x => x.message),
+                    backgroundColor: primaryColor,
+                    borderRadius: 4
+                }]
+            },
+            options: baseOptions
+        });
+
+        const busyMonth = data.busy_month || [];
+        makeChart('busyMonthChart', {
+            type: 'bar',
+            data: {
+                labels: busyMonth.map(x => x.month),
+                datasets: [{
+                    label: 'Messages',
+                    data: busyMonth.map(x => x.message),
+                    backgroundColor: surfaceVariant,
+                    hoverBackgroundColor: primaryColor,
+                    borderRadius: 4
+                }]
+            },
+            options: baseOptions
+        });
+
+        const busyUsers = data.busy_user_percent || [];
+        makeChart('busyUsersChart', {
+            type: 'bar',
+            data: {
+                labels: busyUsers.map(x => x.name),
+                datasets: [{
+                    label: '% of Total Messages',
+                    data: busyUsers.map(x => x.percent),
+                    backgroundColor: primaryColor,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...baseOptions,
+                indexAxis: 'y',
+                scales: { x: { beginAtZero: true, max: 100 } }
+            }
+        });
+    
+
+        const emojis = (data.emojis || []).slice(0, 10);
+        const emojiLabels = emojis.map(x => x.Emoji);
+        const emojiCounts = emojis.map(x => x.Count);
+        makeChart('emojiDonutChart', {
+            type: 'doughnut',
+            data: {
+                labels: emojiLabels.length ? emojiLabels : ['No emojis'],
+                datasets: [{
+                    data: emojiCounts.length ? emojiCounts : [1],
+                    backgroundColor: [
+                        primaryColor, '#e5e2e1', '#869584', '#353534',
+                        '#4caf50', '#8bc34a', '#66bb6a', '#a5d6a7',
+                        '#2e7d32', '#1b5e20'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#e5e2e1' }
+                    }
+                }
+            }
+        });
+
+        // Normalize backend field names/types so Chart.js receives real numbers.
+        // Undefined values make Chart.js fall back to a 0–1 axis with invisible bars.
+        const words = (data.common_words || [])
+            .map(x => ({
+                word: String(x.Word ?? x.word ?? '').trim(),
+                count: Number(x.Count ?? x.count ?? 0)
+            }))
+            .filter(x => x.word && Number.isFinite(x.count) && x.count > 0);
+
+        if (!words.length) {
+            destroyChart('commonWordsChart');
+            const canvas = $('commonWordsChart');
+            const parent = canvas?.parentElement;
+            if (parent) {
+                parent.innerHTML =
+                    '<p class="h-full flex items-center justify-center text-on-surface-variant">No common-word data available.</p>';
+            }
+        } else {
+            makeChart('commonWordsChart', {
+                type: 'bar',
+                data: {
+                    labels: words.map(x => x.word),
+                    datasets: [{
+                        label: 'Occurrences',
+                        data: words.map(x => x.count),
+                        backgroundColor: primaryColor,
+                        hoverBackgroundColor: '#4ff07f',
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        maxBarThickness: 24
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, color: '#869584' },
+                            grid: { color: '#1F1F1F' }
+                        },
+                        y: {
+                            ticks: { color: '#e5e2e1', autoSkip: false },
+                            grid: { color: '#1F1F1F' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx =>
+                                    ` ${Number(ctx.raw || 0).toLocaleString('en-IN')} occurrences`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function renderEmojis(emojis) {
+        const list = $('emojiList');
+        if (!list) return;
+
+        list.innerHTML = '';
+        emojis.slice(0, 10).forEach((item, index, arr) => {
+            const row = document.createElement('div');
+            row.className =
+                'flex justify-between items-center ' +
+                (index === arr.length - 1
+                    ? 'pb-2'
+                    : 'border-b border-outline-variant pb-2');
+            row.innerHTML = `
+                <span class="emoji-glyph text-2xl">${item.Emoji}</span>
+                <span class="font-body-md text-on-surface">${formatNumber(item.Count)}</span>`;
+            list.appendChild(row);
+        });
+
+        if (!emojis.length) {
+            list.innerHTML =
+                '<p class="text-on-surface-variant">No emojis found.</p>';
+        }
+    }
+
+    function renderWordCloud(base64) {
+        const img = $('wordcloudImage');
+        const empty = $('wordcloudEmpty');
+        if (!img || !empty) return;
+
+        if (base64) {
+            img.src = `data:image/png;base64,${base64}`;
+            img.style.display = 'block';
+            empty.style.display = 'none';
+        } else {
+            img.style.display = 'none';
+            empty.style.display = 'block';
+        }
+    }
+
+    // Render the real day x hour activity matrix from the backend.
+    function renderHeatmap(data) {
+        const grid = $('heatmapGrid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        const corner = document.createElement('div');
+        corner.className = 'p-2';
+        grid.appendChild(corner);
+
+        for (let hour = 0; hour < 24; hour++) {
+            const el = document.createElement('div');
+            el.className = 'text-xs text-on-surface-variant text-center';
+            el.textContent = hour;
+            grid.appendChild(el);
+        }
+
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const hourly = data.hourly_activity || [];
+        const activity = {};
+
+        hourly.forEach(item => {
+            activity[`${item.day_name}-${Number(item.hour)}`] = Number(item.message || 0);
+        });
+
+        const max = Math.max(1, ...Object.values(activity));
+
+        days.forEach(day => {
+            const label = document.createElement('div');
+            label.className = 'text-xs text-on-surface-variant text-right pr-2 self-center';
+            label.textContent = day.slice(0, 3);
+            grid.appendChild(label);
+
+            for (let hour = 0; hour < 24; hour++) {
+                const count = activity[`${day}-${hour}`] || 0;
+                const level = Math.max(0, Math.min(5, Math.round((count / max) * 5)));
+                const cell = document.createElement('div');
+                cell.className = `heatmap-cell heatmap-cell-${level} m-0.5`;
+                cell.title = `${day}, ${hour}:00 — ${formatNumber(count)} messages`;
+                grid.appendChild(cell);
+            }
+        });
+
+        const busiestDay = [...(data.busy_day || [])]
+            .sort((a, b) => Number(b.message) - Number(a.message))[0];
+        const busiestHour = [...hourly]
+            .sort((a, b) => Number(b.message) - Number(a.message))[0];
+
+        $('mostActiveDay').textContent = busiestDay?.day_name || '—';
+        $('mostActiveHour').textContent = busiestHour ? `${busiestHour.hour}:00` : '—';
+    }
+
+
+    function renderTakeaways(data) {
+        const busyUsers = data.busy_users || [];
+        const busyPercent = data.busy_user_percent || [];
+        const emojis = data.emojis || [];
+
+        const userTakeaway = $('takeawayUser');
+        const activityTakeaway = $('takeawayActivity');
+        const emojiTakeaway = $('takeawayEmoji');
+
+        if (userTakeaway) {
+            if (busyUsers.length) {
+                const name = busyUsers[0].name;
+                const pct = busyPercent.find(x => x.name === name)?.percent;
+                userTakeaway.innerHTML =
+                    `<strong>${name}</strong> is the most active participant` +
+                    (pct != null ? `, sending ${pct}% of all messages.` : '.');
+            } else if (data.selected_user && data.selected_user !== 'Overall') {
+                userTakeaway.innerHTML =
+                    `<strong>${data.selected_user}</strong> is the selected participant.`;
+            } else {
+                userTakeaway.textContent = 'Participant activity is not available.';
+            }
+        }
+
+        if (activityTakeaway) {
+            const busiestDay = [...(data.busy_day || [])]
+                .sort((a, b) => Number(b.message) - Number(a.message))[0];
+
+            activityTakeaway.innerHTML = busiestDay
+                ? `The conversation is most active on <strong>${busiestDay.day_name}s</strong>.`
+                : 'Activity timing is not available.';
+        }
+
+        if (emojiTakeaway) {
+            const topEmoji = emojis[0];
+            if (topEmoji) {
+                const name = topEmoji.Name || 'emoji';
+                emojiTakeaway.innerHTML =
+                    `<span class="emoji-glyph text-3xl align-middle mr-2">${topEmoji.Emoji}</span>` +
+                    `<strong>${name}</strong> is the most used emoji, appearing ` +
+                    `<strong>${formatNumber(topEmoji.Count)}</strong> times.`;
+            } else {
+                emojiTakeaway.textContent = 'No emojis were found in this conversation.';
+            }
+        }
+    }
+
+    async function init() {
+        const selector = $('userSelector');
+        const analysisId = getAnalysisId();
+
+        if (!analysisId) {
+            showError(
+                'This analysis page is not connected to an uploaded chat yet. ' +
+                'Upload a .txt file through the analyzer first.'
+            );
+            return;
+        }
+
+        // Get the initial overall result.
+        const response = await fetch(
+            `/api/analyze/${encodeURIComponent(analysisId)}?user=Overall`,
+            { cache: 'no-store' }
+        );
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            showError(data.error || 'Could not load the analysis.');
+            return;
+        }
+
+        // Populate the selector from the backend response.
+        // The server is the source of truth for this analysis session.
+        const users = Array.isArray(data.users) ? data.users : ['Overall'];
+
+        selector.innerHTML = '';
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user;
+            option.textContent = user;
+            selector.appendChild(option);
+        });
+
+        selector.value = 'Overall';
+        selector.addEventListener('change', () => loadAnalysis(selector.value));
+
+        renderAnalysis(data);
+    }
+    document.addEventListener('DOMContentLoaded', init);
+})();
+
+
+</script>
+
+<script>
+window.addEventListener('error', (e) => console.error('WhatStat frontend error:', e.error || e.message));
+</script>
+</body></html>
