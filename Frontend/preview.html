@@ -1,12 +1,19 @@
-<!DOCTYPE html><html class="dark" lang="en" style="width: auto;"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>WhatsApp Chat Analyzer - Turn chats into insights</title>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<!DOCTYPE html>
+<html lang="en" style="width: auto;">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>WhatsApp Chat Analyzer - Turn chats into insights</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -67,10 +74,10 @@
                         "full": "9999px"
                     },
                     "spacing": {
-                        "margin-page": "64px",
+                        "margin-page": "48px",
                         "gutter": "32px",
                         "stack-xl": "128px",
-                        "container-max": "1200px",
+                        "container-max": "1440px",
                         "margin-mobile": "24px",
                         "unit": "8px"
                     },
@@ -96,787 +103,1061 @@
             }
         }
     </script>
-<style>
+    <style>
         body {
             background-color: #0A0A0A;
             color: #F5F5F5;
         }
+
         .text-accent {
             color: #25D366;
         }
+
         .bg-accent {
             background-color: #25D366;
         }
+
         .border-subtle {
             border-color: #1F1F1F;
         }
+
         .glow-accent {
             box-shadow: 0 0 20px rgba(37, 211, 102, 0.1);
         }
+
         .glow-text {
             text-shadow: 0 0 10px rgba(37, 211, 102, 0.3);
         }
-        
+
         /* Orbital Animation CSS */
         @keyframes orbit-cw {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         @keyframes orbit-ccw {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
+
         @keyframes pulse-glow {
-            0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 10px rgba(37,211,102,0.5)); }
-            50% { opacity: 1; filter: drop-shadow(0 0 25px rgba(37,211,102,0.8)); }
+
+            0%,
+            100% {
+                opacity: 0.8;
+                filter: drop-shadow(0 0 10px rgba(37, 211, 102, 0.5));
+            }
+
+            50% {
+                opacity: 1;
+                filter: drop-shadow(0 0 25px rgba(37, 211, 102, 0.8));
+            }
         }
-        .animate-orbit-cw { animation: orbit-cw 20s linear infinite; }
-        .animate-orbit-ccw { animation: orbit-ccw 25s linear infinite; }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+        .animate-orbit-cw {
+            animation: orbit-cw 20s linear infinite;
+        }
+
+        .animate-orbit-ccw {
+            animation: orbit-ccw 25s linear infinite;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        /* LIGHT MODE COLOR OVERRIDES */
+        html:not(.dark) .text-on-surface {
+            color: #111111 !important;
+        }
+
+        html:not(.dark) .text-on-surface-variant {
+            color: #555555 !important;
+        }
+
+        html:not(.dark) .text-primary {
+            color: #22c55e !important;
+        }
     </style>
 </head>
-<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col">
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#0A0A0A]/90 dark:bg-[#0A0A0A]/90 backdrop-blur-md border-b border-[#1F1F1F]">
-<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-mobile md:px-margin-page h-16">
-<div class="flex items-center gap-4">
 
-<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary hidden md:block">WHATSTAT</span>
-</div>
-<div class="hidden md:flex items-center gap-8">
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#features">Features</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#how-it-works">How it works</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#about">About</a>
-</div>
-<div class="flex items-center gap-4">
-<button class="text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined">dark_mode</span>
-</button>
-<a class="hidden md:inline-flex items-center justify-center bg-primary-container text-[#0A0A0A] font-semibold px-6 py-2 rounded transition-transform hover:scale-95" href="#upload">
+<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col
+             bg-white text-black
+             dark:bg-[#0A0A0A] dark:text-white">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50
+           bg-white/90 dark:bg-[#0A0A0A]/90
+           backdrop-blur-md
+           border-b border-neutral-200 dark:border-[#1F1F1F]">
+        <div
+            class="flex justify-between items-center max-w-container-max mx-auto px-margin-mobile md:px-margin-page h-16">
+            <div class="flex items-center gap-4">
+
+                <a href="/"
+                    class="font-headline md:text-headline-md font-bold text-primary dark:text-primary hidden md:block">
+                    WHATSTAT
+                </a>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="#features">Features</a>
+                <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="#how-it-works">How it works</a>
+                <a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="#about">About</a>
+            </div>
+            <div class="flex items-center gap-4">
+
+                <div id="themePullSwitcher"
+                    class="relative w-12 h-16 flex justify-center overflow-visible cursor-grab select-none">
+                    <!-- White pull line -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2
+               w-0.5 h-20
+               bg-neutral-200 dark:bg-neutral-700"></div>
+
+                    <!-- Pull ball -->
+                    <div id="themePullBall" class="absolute top-16 w-8 h-8 rounded-full
+           bg-[radial-gradient(circle_at_center,_#facc15,_#fcd34d,_#fef9c3)]
+           shadow-[0_0_20px_8px_rgba(250,204,21,0.5)]
+           dark:bg-[radial-gradient(circle_at_center,_#111111,_#050505,_#000000)]
+           dark:shadow-[0_0_20px_6px_rgba(31,41,55,0.7)] z-50"></div>
+                </div>
+                <a class="inline-flex items-center justify-center bg-accent text-[#0A0A0A] font-semibold px-5 py-2 rounded-lg transition-transform hover:scale-95 text-lg"
+                    href="#upload">
                     Analyze your chat →
                 </a>
-</div>
-</div>
-</nav>
-<main class="flex-grow pt-24">
-<!-- Section 1: Hero -->
-<section class="min-h-[90vh] flex flex-col justify-center max-w-container-max mx-auto px-margin-mobile md:px-margin-page relative py-stack-xl">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
-<div class="flex flex-col gap-8 z-10">
-<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
-                        Your WhatsApp chats.<br>
+
+
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow pt-24">
+        <!-- Section 1: Hero -->
+        <section
+            class="min-h-[90vh] flex flex-col justify-center max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-page relative py-stack-xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
+                <div class="flex flex-col gap-8 z-10">
+                    <h1
+                        class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                        <span class="md:whitespace-nowrap">Your WhatsApp chats.</span><br>
                         Turned into <span class="text-accent glow-text">insights.</span>
-</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
                         Understand your conversations through activity, people, emojis, words and patterns.
                     </p>
-<div class="flex flex-col items-start gap-3">
-<a class="inline-flex items-center justify-center bg-accent text-[#0A0A0A] font-semibold px-8 py-4 rounded-lg transition-transform hover:scale-95 text-lg" href="#upload">
+                    <div class="flex flex-col items-start gap-3">
+                        <a class="inline-flex items-center justify-center bg-accent text-[#0A0A0A] font-semibold px-8 py-4 rounded-lg transition-transform hover:scale-95 text-lg"
+                            href="#upload">
                             Analyze your chat →
                         </a>
-<span class="text-on-surface-variant text-sm pl-2">No account required</span>
-</div>
-</div>
-<!-- Orbital Visual -->
-<div class="relative h-[400px] md:h-[600px] flex items-center justify-center pointer-events-none mt-16 md:mt-0">
-<!-- Central Core -->
-<div class="absolute w-24 h-24 bg-accent/20 rounded-full blur-xl animate-pulse-glow z-0"></div>
-<div class="relative z-10 w-20 h-20 bg-[#0A0A0A] rounded-full border border-accent flex items-center justify-center animate-float">
-<span class="material-symbols-outlined text-accent text-4xl" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">chat</span>
-</div>
-<!-- Orbit 1 -->
-<div class="absolute w-[250px] h-[250px] border border-[#1F1F1F] rounded-full animate-orbit-cw">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-[#161616] border border-accent rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined text-accent text-[12px]">bar_chart</span>
-</div>
-</div>
-<!-- Orbit 2 -->
-<div class="absolute w-[380px] h-[380px] border border-[#1F1F1F] rounded-full animate-orbit-ccw opacity-70">
-<div class="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 bg-[#161616] border border-accent/50 rounded flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface text-[16px]">show_chart</span>
-</div>
-<div class="absolute bottom-10 left-10 w-4 h-4 bg-accent/80 rounded-full shadow-[0_0_10px_#25D366]"></div>
-</div>
-<!-- Orbit 3 (Dashed) -->
-<div class="absolute w-[500px] h-[500px] border border-dashed border-[#1F1F1F]/50 rounded-full animate-orbit-cw hidden md:block">
-<div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 bg-[#161616] border border-[#1F1F1F] rounded flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface text-[20px]">pie_chart</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-on-surface-variant animate-bounce">
-<span class="font-label-caps text-label-caps">Scroll to explore</span>
-<span class="material-symbols-outlined text-sm">arrow_downward</span>
-</div>
-</section>
-<!-- Section 2: Statement -->
-<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl flex flex-col items-center text-center gap-8 border-t border-subtle">
-<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface max-w-4xl leading-tight">
+                        <span class="text-on-surface-variant text-sm pl-2">No account required</span>
+                    </div>
+                </div>
+                <!-- Orbital Visual -->
+                <div
+                    class="relative h-[400px] md:h-[600px] flex items-center justify-center pointer-events-none mt-16 lg:mt-0">
+                    <!-- Central Core -->
+                    <div class="absolute w-24 h-24 bg-accent/20 rounded-full blur-xl animate-pulse-glow z-0"></div>
+                    <div
+                        class="relative z-10 w-20 h-20 bg-white dark:bg-[#0A0A0A] rounded-full border border-accent flex items-center justify-center animate-float">
+                        <span class="material-symbols-outlined text-accent text-4xl" data-weight="fill"
+                            style="font-variation-settings: &quot;FILL&quot; 1;">chat</span>
+                    </div>
+                    <!-- Orbit 1 -->
+                    <div class="absolute w-[250px] h-[250px] border border-[#1F1F1F] rounded-full animate-orbit-cw">
+                        <div
+                            class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-[#161616] border border-accent rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-accent text-[12px]">bar_chart</span>
+                        </div>
+                    </div>
+                    <!-- Orbit 2 -->
+                    <div
+                        class="absolute w-[380px] h-[380px] border border-[#1F1F1F] rounded-full animate-orbit-ccw opacity-70">
+                        <div
+                            class="absolute top-1/2 -right-4 -translate-y-1/2 w-8 h-8 bg-[#161616] border border-accent/50 rounded flex items-center justify-center">
+                            <span class="material-symbols-outlined text-on-surface text-[16px]">show_chart</span>
+                        </div>
+                        <div
+                            class="absolute bottom-10 left-10 w-4 h-4 bg-accent/80 rounded-full shadow-[0_0_10px_#25D366]">
+                        </div>
+                    </div>
+                    <!-- Orbit 3 (Dashed) -->
+                    <div
+                        class="absolute w-[500px] h-[500px] border border-dashed border-[#1F1F1F]/50 rounded-full animate-orbit-cw hidden md:block">
+                        <div
+                            class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 bg-[#161616] border border-[#1F1F1F] rounded flex items-center justify-center">
+                            <span class="material-symbols-outlined text-on-surface text-[20px]">pie_chart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-on-surface-variant animate-bounce">
+                <span class="font-label-caps text-label-caps">Scroll to explore</span>
+                <span class="material-symbols-outlined text-sm">arrow_downward</span>
+            </div>
+        </section>
+        <!-- Section 2: Statement -->
+        <section
+            class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl flex flex-col items-center text-center gap-8 border-t border-subtle">
+            <h2
+                class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface max-w-4xl leading-tight">
                 Every conversation leaves a pattern.
             </h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                Discover who talks the most. When your chat comes alive. Which emojis dominate. And the words that define it.
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                Discover who talks the most. When your chat comes alive. Which emojis dominate. And the words that
+                define it.
             </p>
-</section>
-<!-- Section 3: Cinematic Stats -->
-<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter text-center md:text-left">
-<div class="flex flex-col gap-2">
-<div class="font-headline-xl text-headline-xl text-on-surface"><span class="text-accent">18,896</span></div>
-<div class="font-label-caps text-label-caps text-on-surface-variant">Messages</div>
-</div>
-<div class="flex flex-col gap-2">
-<div class="font-headline-xl text-headline-xl text-on-surface"><span class="text-accent">78,022</span></div>
-<div class="font-label-caps text-label-caps text-on-surface-variant">Words</div>
-</div>
-<div class="flex flex-col gap-2">
-<div class="font-headline-xl text-headline-xl text-on-surface"><span class="text-accent">5,064</span></div>
-<div class="font-label-caps text-label-caps text-on-surface-variant">Media</div>
-</div>
-<div class="flex flex-col gap-2">
-<div class="font-headline-xl text-headline-xl text-on-surface"><span class="text-accent">66</span></div>
-<div class="font-label-caps text-label-caps text-on-surface-variant">Links</div>
-</div>
-</div>
-</section>
-<!-- Section 4: Timeline -->
-<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle overflow-hidden">
-<div class="flex flex-col gap-12">
-<h3 class="font-headline-xl text-headline-xl text-on-surface text-center">Know your mates more closely.</h3>
-<!-- Abstract Timeline Visual -->
-<div class="relative h-48 w-full bg-[#131313] border border-subtle rounded-lg flex items-center px-8">
-<!-- Base Line -->
-<div class="absolute left-8 right-8 h-[2px] bg-[#1F1F1F] top-1/2 -translate-y-1/2"></div>
-<!-- Glowing Active Line -->
-<div class="absolute left-8 w-[60%] h-[2px] bg-accent glow-accent top-1/2 -translate-y-1/2"></div>
-<!-- Data Points / Pulses -->
-<div class="absolute left-[20%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-12">
-<div class="w-1 h-16 bg-accent/40 rounded-full"></div>
-<div class="w-3 h-3 bg-accent rounded-full shadow-[0_0_8px_#25D366]"></div>
-</div>
-<div class="absolute left-[40%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-16">
-<div class="w-1 h-24 bg-accent/60 rounded-full"></div>
-<div class="w-3 h-3 bg-accent rounded-full shadow-[0_0_8px_#25D366]"></div>
-</div>
-<div class="absolute left-[60%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-8">
-<div class="w-1 h-10 bg-accent/80 rounded-full"></div>
-<div class="w-4 h-4 bg-on-surface border-2 border-accent rounded-full shadow-[0_0_12px_#25D366] z-10"></div>
-</div>
-<div class="absolute left-[80%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-6">
-<div class="w-1 h-8 bg-[#1F1F1F] rounded-full"></div>
-<div class="w-2 h-2 bg-[#1F1F1F] rounded-full"></div>
-</div>
-</div>
-</div>
-</section>
-<!-- Section 5: Features -->
-<section
-    id="features"
-    class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle"
->
-    <div class="flex flex-col gap-16">
+        </section>
+        <!-- Section 3: Cinematic Stats -->
 
-        <!-- Heading -->
-        <div class="max-w-3xl">
-            <span class="font-label-caps text-label-caps text-accent">
-                FEATURES
-            </span>
+        <!-- Section 4: Timeline -->
+        <section
+            class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle overflow-hidden">
+            <div class="flex flex-col gap-12">
+                <h3 class="font-headline-xl text-headline-xl text-on-surface text-center">Know your mates more closely.
+                </h3>
+                <!-- Abstract Timeline Visual -->
+                <div class="relative h-48 w-full bg-[#131313] border border-subtle rounded-lg flex items-center px-8">
+                    <!-- Base Line -->
+                    <div class="absolute left-8 right-8 h-[2px] bg-[#1F1F1F] top-1/2 -translate-y-1/2"></div>
+                    <!-- Glowing Active Line -->
+                    <div class="absolute left-8 w-[60%] h-[2px] bg-accent glow-accent top-1/2 -translate-y-1/2"></div>
+                    <!-- Data Points / Pulses -->
+                    <div class="absolute left-[20%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-12">
+                        <div class="w-1 h-16 bg-accent/40 rounded-full"></div>
+                        <div class="w-3 h-3 bg-accent rounded-full shadow-[0_0_8px_#25D366]"></div>
+                    </div>
+                    <div class="absolute left-[40%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-16">
+                        <div class="w-1 h-24 bg-accent/60 rounded-full"></div>
+                        <div class="w-3 h-3 bg-accent rounded-full shadow-[0_0_8px_#25D366]"></div>
+                    </div>
+                    <div class="absolute left-[60%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-8">
+                        <div class="w-1 h-10 bg-accent/80 rounded-full"></div>
+                        <div
+                            class="w-4 h-4 bg-on-surface border-2 border-accent rounded-full shadow-[0_0_12px_#25D366] z-10">
+                        </div>
+                    </div>
+                    <div class="absolute left-[80%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 -mt-6">
+                        <div class="w-1 h-8 bg-[#1F1F1F] rounded-full"></div>
+                        <div class="w-2 h-2 bg-[#1F1F1F] rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Section 5: Features -->
+        <section id="features"
+            class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle">
+            <div class="flex flex-col gap-16">
 
-            <h2 class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
-                See what your conversations
-                <span class="text-accent glow-text">really say.</span>
-            </h2>
-
-            <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                WhatsStat breaks down your WhatsApp conversations into
-                clear, visual insights that are actually interesting to explore.
-            </p>
-        </div>
-
-        <!-- Feature Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <!-- Feature 1 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        bar_chart
+                <!-- Heading -->
+                <div class="max-w-3xl">
+                    <span class="font-label-caps text-label-caps text-accent">
+                        FEATURES
                     </span>
+
+                    <h2
+                        class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                        See what your conversations
+                        <span class="text-accent glow-text">really say.</span>
+                    </h2>
+
+                    <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                        WhatsStat breaks down your WhatsApp conversations into
+                        clear, visual insights that are actually interesting to explore.
+                    </p>
                 </div>
 
-                <h3 class="text-xl font-semibold text-on-surface">
-                    Message Statistics
-                </h3>
+                <!-- Feature Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    See total messages, words, media and links shared
-                    throughout your conversation.
-                </p>
+                    <!-- Feature 1 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                bar_chart
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            Message Statistics
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            See total messages, words, media and links shared
+                            throughout your conversation.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                group
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            People & Activity
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            Discover who talks the most, when conversations
+                            become active and how activity changes over time.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                mood
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            Emoji Insights
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            Find the emojis that dominate your conversation
+                            and discover your chat's most common expressions.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                text_fields
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            Word Analysis
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            Explore the words and phrases that appear most
+                            frequently across your conversations.
+                        </p>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                calendar_month
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            Conversation Timeline
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            Visualize how your conversation evolves across
+                            days, months and different periods of activity.
+                        </p>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div
+                        class="group p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
+                            <span class="material-symbols-outlined text-accent">
+                                insights
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-semibold text-on-surface">
+                            Visual Insights
+                        </h3>
+
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">
+                            Turn raw chat data into interactive charts and
+                            patterns that are easy to understand.
+                        </p>
+                    </div>
+
+                </div>
             </div>
+        </section>
 
-            <!-- Feature 2 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        group
+
+        <!-- Section 6: How It Works -->
+        <section id="how-it-works"
+            class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle">
+            <div class="flex flex-col gap-16">
+
+                <!-- Heading -->
+                <div class="text-center max-w-3xl mx-auto">
+                    <span class="font-label-caps text-label-caps text-accent">
+                        HOW IT WORKS
                     </span>
+
+                    <h2
+                        class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                        Three steps.
+                        <span class="text-accent glow-text">That's it.</span>
+                    </h2>
+
+                    <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant">
+                        No complicated setup. Just export your conversation,
+                        upload it and explore the results.
+                    </p>
                 </div>
 
-                <h3 class="text-xl font-semibold text-on-surface">
-                    People & Activity
-                </h3>
+                <!-- Steps -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    Discover who talks the most, when conversations
-                    become active and how activity changes over time.
-                </p>
+                    <!-- Step 1 -->
+                    <div class="relative p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="text-5xl font-semibold text-accent/20">
+                                01
+                            </span>
+
+                            <span class="material-symbols-outlined text-accent text-3xl">
+                                download
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-on-surface">
+                            Export
+                        </h3>
+
+                        <p class="mt-4 text-on-surface-variant leading-relaxed">
+                            Export your WhatsApp conversation as a
+                            <span class="text-accent">.txt</span> file.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="text-5xl font-semibold text-accent/20">
+                                02
+                            </span>
+
+                            <span class="material-symbols-outlined text-accent text-3xl">
+                                upload_file
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-on-surface">
+                            Upload
+                        </h3>
+
+                        <p class="mt-4 text-on-surface-variant leading-relaxed">
+                            Drop your exported file into WhatsStat and
+                            start the analysis.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative p-8 bg-white dark:bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="text-5xl font-semibold text-accent/20">
+                                03
+                            </span>
+
+                            <span class="material-symbols-outlined text-accent text-3xl">
+                                insights
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold text-on-surface">
+                            Discover
+                        </h3>
+
+                        <p class="mt-4 text-on-surface-variant leading-relaxed">
+                            Explore your messages, people, emojis, words
+                            and activity through visual insights.
+                        </p>
+                    </div>
+
+                </div>
             </div>
+        </section>
 
-            <!-- Feature 3 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        mood
+
+        <!-- Section 7: About -->
+        <section id="about"
+            class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+
+                <!-- Text -->
+                <div>
+                    <span class="font-label-caps text-label-caps text-accent">
+                        ABOUT WHATSSTAT
                     </span>
+
+                    <h2
+                        class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+                        Your conversations
+                        <span class="text-accent glow-text">have patterns.</span>
+                    </h2>
+
+                    <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant">
+                        WhatsStat transforms an exported WhatsApp conversation
+                        into an interactive collection of statistics,
+                        timelines and visual insights.
+                    </p>
+
+                    <p class="mt-5 text-on-surface-variant leading-relaxed">
+                        Instead of scrolling through thousands of messages,
+                        understand the conversation at a glance who talks,
+                        when things get busy, what words appear most and
+                        which emojis define the chat.
+                    </p>
+
+
                 </div>
 
-                <h3 class="text-xl font-semibold text-on-surface">
-                    Emoji Insights
-                </h3>
+                <!-- Visual -->
+                <div class="relative min-h-[360px] flex items-center justify-center">
 
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    Find the emojis that dominate your conversation
-                    and discover your chat's most common expressions.
-                </p>
-            </div>
+                    <div class="absolute w-72 h-72 border border-[#1F1F1F] rounded-full animate-orbit-cw"></div>
 
-            <!-- Feature 4 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        text_fields
-                    </span>
+                    <div class="absolute w-56 h-56 border border-accent/20 rounded-full animate-orbit-ccw"></div>
+
+                    <div
+                        class="relative w-28 h-28 rounded-full bg-white dark:bg-[#0A0A0A] border border-accent flex items-center justify-center animate-float">
+                        <span class="material-symbols-outlined text-accent text-5xl">
+                            chat
+                        </span>
+                    </div>
+
+                    <div
+                        class="absolute top-10 right-20 w-12 h-12 rounded-lg bg-[#161616] border border-accent/30 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-accent">
+                            bar_chart
+                        </span>
+                    </div>
+
+                    <div
+                        class="absolute bottom-10 left-16 w-12 h-12 rounded-lg bg-[#161616] border border-accent/30 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-accent">
+                            emoji_emotions
+                        </span>
+                    </div>
+
                 </div>
 
-                <h3 class="text-xl font-semibold text-on-surface">
-                    Word Analysis
-                </h3>
-
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    Explore the words and phrases that appear most
-                    frequently across your conversations.
-                </p>
             </div>
-
-            <!-- Feature 5 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        calendar_month
-                    </span>
-                </div>
-
-                <h3 class="text-xl font-semibold text-on-surface">
-                    Conversation Timeline
-                </h3>
-
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    Visualize how your conversation evolves across
-                    days, months and different periods of activity.
-                </p>
-            </div>
-
-            <!-- Feature 6 -->
-            <div class="group p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl hover:border-accent/40 transition-all duration-300">
-                <div class="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-6 group-hover:bg-accent/15 transition-colors">
-                    <span class="material-symbols-outlined text-accent">
-                        insights
-                    </span>
-                </div>
-
-                <h3 class="text-xl font-semibold text-on-surface">
-                    Visual Insights
-                </h3>
-
-                <p class="mt-3 text-on-surface-variant leading-relaxed">
-                    Turn raw chat data into interactive charts and
-                    patterns that are easy to understand.
-                </p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- Section 6: How It Works -->
-<section
-    id="how-it-works"
-    class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle"
->
-    <div class="flex flex-col gap-16">
-
-        <!-- Heading -->
-        <div class="text-center max-w-3xl mx-auto">
-            <span class="font-label-caps text-label-caps text-accent">
-                HOW IT WORKS
-            </span>
-
-            <h2 class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
-                Three steps.
-                <span class="text-accent glow-text">That's it.</span>
-            </h2>
-
-            <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant">
-                No complicated setup. Just export your conversation,
-                upload it and explore the results.
-            </p>
-        </div>
-
-        <!-- Steps -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <!-- Step 1 -->
-            <div class="relative p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
-                <div class="flex items-center justify-between mb-8">
-                    <span class="text-5xl font-semibold text-accent/20">
-                        01
-                    </span>
-
-                    <span class="material-symbols-outlined text-accent text-3xl">
-                        download
-                    </span>
-                </div>
-
-                <h3 class="text-2xl font-semibold text-on-surface">
-                    Export
-                </h3>
-
-                <p class="mt-4 text-on-surface-variant leading-relaxed">
-                    Export your WhatsApp conversation as a
-                    <span class="text-accent">.txt</span> file.
-                </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="relative p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
-                <div class="flex items-center justify-between mb-8">
-                    <span class="text-5xl font-semibold text-accent/20">
-                        02
-                    </span>
-
-                    <span class="material-symbols-outlined text-accent text-3xl">
-                        upload_file
-                    </span>
-                </div>
-
-                <h3 class="text-2xl font-semibold text-on-surface">
-                    Upload
-                </h3>
-
-                <p class="mt-4 text-on-surface-variant leading-relaxed">
-                    Drop your exported file into WhatsStat and
-                    start the analysis.
-                </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="relative p-8 bg-[#0D0D0D] border border-[#1F1F1F] rounded-xl">
-                <div class="flex items-center justify-between mb-8">
-                    <span class="text-5xl font-semibold text-accent/20">
-                        03
-                    </span>
-
-                    <span class="material-symbols-outlined text-accent text-3xl">
-                        insights
-                    </span>
-                </div>
-
-                <h3 class="text-2xl font-semibold text-on-surface">
-                    Discover
-                </h3>
-
-                <p class="mt-4 text-on-surface-variant leading-relaxed">
-                    Explore your messages, people, emojis, words
-                    and activity through visual insights.
-                </p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- Section 7: About -->
-<section
-    id="about"
-    class="max-w-container-max mx-auto px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle"
->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
-
-        <!-- Text -->
-        <div>
-            <span class="font-label-caps text-label-caps text-accent">
-                ABOUT WHATSSTAT
-            </span>
-
-            <h2 class="mt-4 font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
-                Your conversations
-                <span class="text-accent glow-text">have patterns.</span>
-            </h2>
-
-            <p class="mt-6 font-body-lg text-body-lg text-on-surface-variant">
-                WhatsStat transforms an exported WhatsApp conversation
-                into an interactive collection of statistics,
-                timelines and visual insights.
-            </p>
-
-            <p class="mt-5 text-on-surface-variant leading-relaxed">
-                Instead of scrolling through thousands of messages,
-                understand the conversation at a glance — who talks,
-                when things get busy, what words appear most and
-                which emojis define the chat.
-            </p>
-
-            
-        </div>
-
-        <!-- Visual -->
-        <div class="relative min-h-[360px] flex items-center justify-center">
-
-            <div class="absolute w-72 h-72 border border-[#1F1F1F] rounded-full animate-orbit-cw"></div>
-
-            <div class="absolute w-56 h-56 border border-accent/20 rounded-full animate-orbit-ccw"></div>
-
-            <div class="relative w-28 h-28 rounded-full bg-[#0A0A0A] border border-accent flex items-center justify-center animate-float">
-                <span class="material-symbols-outlined text-accent text-5xl">
-                    chat
-                </span>
-            </div>
-
-            <div class="absolute top-10 right-20 w-12 h-12 rounded-lg bg-[#161616] border border-accent/30 flex items-center justify-center">
-                <span class="material-symbols-outlined text-accent">
-                    bar_chart
-                </span>
-            </div>
-
-            <div class="absolute bottom-10 left-16 w-12 h-12 rounded-lg bg-[#161616] border border-accent/30 flex items-center justify-center">
-                <span class="material-symbols-outlined text-accent">
-                    emoji_emotions
-                </span>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-<!-- Section 8: Upload Experience -->
-<section class="min-h-screen flex flex-col items-center justify-center px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle bg-[#080808]" id="upload">
-<div class="w-full max-w-3xl flex flex-col items-center text-center gap-8">
-<div class="flex flex-col gap-4">
-<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
+        </section>
+        <!-- Section 8: Upload Experience -->
+        <section
+            class="min-h-screen flex flex-col items-center justify-center px-margin-mobile md:px-margin-page py-stack-xl border-t border-subtle bg-white dark:bg-[#0D0D0D]"
+            id="upload">
+            <div class="w-full max-w-3xl flex flex-col items-center text-center gap-8">
+                <div class="flex flex-col gap-4">
+                    <h2
+                        class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">
                         Analyze your WhatsApp chat
                     </h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    <p class="font-body-lg text-body-lg text-on-surface-variant">
                         Upload your exported WhatsApp conversation and discover what's hiding inside it.
                     </p>
-</div>
-<!-- Functional Dropzone -->
-<input id="chatFileInput" type="file" accept=".txt,text/plain" class="hidden">
+                </div>
+                <!-- Functional Dropzone -->
+                <input id="chatFileInput" type="file" accept=".txt,text/plain" class="hidden">
 
-<div id="dropzone"
-     role="button"
-     tabindex="0"
-     aria-label="Upload WhatsApp chat text file"
-     class="w-full mt-8 border-2 border-dashed border-[#1F1F1F] hover:border-accent transition-all duration-300 bg-[#0A0A0A] rounded-xl p-16 flex flex-col items-center justify-center gap-6 cursor-pointer group">
-    <div id="uploadIcon"
-         class="w-16 h-16 rounded-full bg-[#161616] flex items-center justify-center group-hover:bg-accent/10 transition-colors">
-        <span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-accent">upload_file</span>
-    </div>
+                <div id="dropzone" role="button" tabindex="0" aria-label="Upload WhatsApp chat text file"
+                    class="w-full mt-8 border-2 border-dashed border-[#1F1F1F] hover:border-accent transition-all duration-300 bg-white dark:bg-[#0A0A0A] rounded-xl p-16 flex flex-col items-center justify-center gap-6 cursor-pointer group">
+                    <div id="uploadIcon"
+                        class="w-16 h-16 rounded-full bg-[#161616] flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                        <span
+                            class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-accent">upload_file</span>
+                    </div>
 
-    <div class="flex flex-col gap-2">
-        <span id="uploadTitle" class="font-headline-md text-headline-md text-on-surface text-xl">
-            Drop your .txt file here
-        </span>
-        <span id="uploadSubtitle" class="font-body-md text-body-md text-on-surface-variant">
-            or click to browse files
-        </span>
-    </div>
+                    <div class="flex flex-col gap-2">
+                        <span id="uploadTitle" class="font-headline-md text-headline-md text-on-surface text-xl">
+                            Drop your .txt file here
+                        </span>
+                        <span id="uploadSubtitle" class="font-body-md text-body-md text-on-surface-variant">
+                            or click to browse files
+                        </span>
+                    </div>
 
-    <div id="fileStatus"
-         class="hidden px-4 py-2 rounded bg-[#161616] border border-[#1F1F1F] mt-2 text-sm">
-    </div>
+                    <div id="fileStatus"
+                        class="hidden px-4 py-2 rounded bg-[#161616] border border-[#1F1F1F] mt-2 text-sm">
+                    </div>
 
-    <div class="px-4 py-1 rounded bg-[#161616] border border-subtle mt-2">
-        <span class="font-label-caps text-label-caps text-on-surface-variant">.txt format only</span>
-    </div>
-</div>
-
-<button id="startAnalysisBtn"
-        class="mt-8 bg-[#161616] text-[#444] border border-[#1F1F1F] font-semibold px-12 py-4 rounded-lg cursor-not-allowed transition-all duration-300 w-full md:w-auto"
-        disabled>
-    START ANALYSIS →
-</button>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="w-full py-stack-xl bg-background dark:bg-background border-t border-outline-variant">
-<div class="flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto px-margin-page gap-gutter">
-<span class="font-label-caps text-label-caps text-on-surface-variant">© 2024 WhatsApp Chat Analyzer. All rights yet to take.</span>
-<div class="flex gap-6">
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">instagram</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Terms of Service</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200" href="#"><br></a>
-</div>
-</div>
-</footer>
-
-
-
-<!-- Analysis Processing Screen -->
-<div id="analysisScreen"
-     class="fixed inset-0 z-[100] hidden bg-[#050505] text-[#F5F5F5] overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,211,102,0.08),transparent_42%)]"></div>
-
-    <div class="relative min-h-screen flex items-center justify-center px-6">
-        <div class="w-full max-w-3xl">
-
-            <div class="text-center mb-12">
-                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#1F1F1F] bg-[#0B0B0B] text-sm text-[#BBCBB9]">
-                    <span id="processingPulse"
-                          class="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_12px_#25D366] animate-pulse"></span>
-                    <span id="processingLabel">Analyzing your conversation</span>
+                    <div class="px-4 py-1 rounded bg-[#161616] border border-subtle mt-2">
+                        <span class="font-label-caps text-label-caps text-on-surface-variant">.txt format only</span>
+                    </div>
                 </div>
 
-                <h2 id="processingTitle"
-                    class="mt-8 text-4xl md:text-6xl font-semibold tracking-tight">
-                    Preparing your data...
-                </h2>
-
-                <p id="processingSubtitle"
-                   class="mt-4 text-[#8F9B90] text-base md:text-lg">
-                    This may take a moment.
-                </p>
+                <button id="startAnalysisBtn"
+                    class="mt-8 bg-[#161616] text-[#444] border border-[#1F1F1F] font-semibold px-12 py-4 rounded-lg cursor-not-allowed transition-all duration-300 w-full md:w-auto"
+                    disabled>
+                    START ANALYSIS →
+                </button>
             </div>
-
-            <div class="relative">
-                <!-- Vertical process line -->
-                <div class="absolute left-[23px] top-6 bottom-6 w-px bg-[#1F1F1F]"></div>
-                <div id="progressLine"
-                     class="absolute left-[23px] top-6 w-px bg-[#25D366] transition-all duration-700"
-                     style="height:0%; box-shadow:0 0 12px rgba(37,211,102,.45);"></div>
-
-                <div id="analysisSteps" class="space-y-5"></div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full py-stack-xl bg-background dark:bg-background border-t border-outline-variant">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto px-margin-page gap-gutter">
+            <span class="font-label-caps text-label-caps text-on-surface-variant">WhatsApp Chat Analyzer. All
+                rights yet to take.</span>
+            <div class="flex gap-6">
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="https://www.instagram.com/aditya.raghuvanshii">Instagram</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="https://www.linkedin.com/in/adityasinghraghuvanshi/">LinkedIn</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-200"
+                    href="#"><br></a>
             </div>
+        </div>
+    </footer>
 
-            <div id="processingFooter"
-                 class="mt-12 flex flex-col items-center gap-4">
-                <div class="w-full max-w-xl h-1 rounded-full bg-[#151515] overflow-hidden">
-                    <div id="overallProgress"
-                         class="h-full bg-[#25D366] transition-all duration-700"
-                         style="width:0%; box-shadow:0 0 14px rgba(37,211,102,.45);"></div>
+
+
+    <!-- Analysis Processing Screen -->
+    <div id="analysisScreen"
+        class="fixed inset-0 z-[100] hidden bg-white text-[#111111] dark:bg-[#050505] dark:text-[#F5F5F5] overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,211,102,0.08),transparent_42%)]">
+        </div>
+
+        <div class="relative min-h-screen flex items-center justify-center px-6">
+            <div class="w-full max-w-3xl">
+
+                <div class="text-center mb-12">
+                    <div
+                        class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-gray-200 dark:border-[#1F1F1F] bg-gray-100 dark:bg-[#0B0B0B] text-sm text-gray-600 dark:text-[#BBCBB9]">
+                        <span id="processingPulse"
+                            class="w-2 h-2 rounded-full bg-[#25D366] shadow-[0_0_12px_#25D366] animate-pulse"></span>
+                        <span id="processingLabel">Analyzing your conversation</span>
+                    </div>
+
+                    <h2 id="processingTitle"
+                        class="mt-8 text-4xl md:text-6xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                        Preparing your data...
+                    </h2>
+
+                    <p id="processingSubtitle" class="mt-4 text-gray-500 dark:text-[#8F9B90] text-base md:text-lg">
+                        This may take a moment.
+                    </p>
                 </div>
 
-                <div class="flex items-center justify-between w-full max-w-xl text-xs text-[#687168]">
-                    <span id="progressPercent">0%</span>
-                    <span>WhatsApp Chat Analyzer</span>
-                </div>
-            </div>
+                <div class="relative">
+                    <!-- Vertical process line -->
+                    <div class="absolute left-[23px] top-6 bottom-6 w-px bg-gray-200 dark:bg-[#1F1F1F]"></div>
+                    <div id="progressLine"
+                        class="absolute left-[23px] top-6 w-px bg-[#25D366] transition-all duration-700"
+                        style="height:0%; box-shadow:0 0 12px rgba(37,211,102,.45);"></div>
 
-            <div id="analysisComplete"
-                 class="hidden text-center mt-12">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#25D366]/10 border border-[#25D366]/40">
-                    <span class="material-symbols-outlined text-[#25D366] text-3xl">check</span>
+                    <div id="analysisSteps" class="space-y-5"></div>
                 </div>
-                <h3 class="mt-5 text-2xl font-semibold">Analysis complete</h3>
-                <p class="mt-2 text-[#8F9B90]">Opening your insights...</p>
+
+                <div id="processingFooter" class="mt-12 flex flex-col items-center gap-4">
+                    <div class="w-full max-w-xl h-1 rounded-full bg-gray-200 dark:bg-[#151515] overflow-hidden">
+                        <div id="overallProgress" class="h-full bg-[#25D366] transition-all duration-700"
+                            style="width:0%; box-shadow:0 0 14px rgba(37,211,102,.45);"></div>
+                    </div>
+
+                    <div
+                        class="flex items-center justify-between w-full max-w-xl text-xs text-gray-500 dark:text-[#687168]">
+                        <span id="progressPercent">0%</span>
+                        <span>WhatsApp Chat Analyzer</span>
+                    </div>
+                </div>
+
+                <div id="analysisComplete" class="hidden text-center mt-12">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#25D366]/10 border border-[#25D366]/40">
+                        <span class="material-symbols-outlined text-[#25D366] text-3xl">check</span>
+                    </div>
+                    <h3 class="mt-5 text-2xl font-semibold text-gray-900 dark:text-white">Analysis complete</h3>
+                    <p class="mt-2 text-gray-500 dark:text-[#8F9B90]">Opening your insights...</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("chatFileInput");
-    const dropzone = document.getElementById("dropzone");
-    const startButton = document.getElementById("startAnalysisBtn");
-    const fileStatus = document.getElementById("fileStatus");
-    const uploadTitle = document.getElementById("uploadTitle");
-    const uploadSubtitle = document.getElementById("uploadSubtitle");
-    const uploadIcon = document.getElementById("uploadIcon");
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // ===============================
+            // PULL DOWN THEME SWITCHER
+            // ===============================
 
-    let selectedFile = null;
+            const switcher = document.getElementById("themePullSwitcher");
+            const ball = document.getElementById("themePullBall");
 
-    function setStatus(message, type = "neutral") {
-        fileStatus.classList.remove("hidden");
-        fileStatus.textContent = message;
+            let dragging = false;
+            let startY = 0;
 
-        fileStatus.classList.remove(
-            "text-green-400", "border-green-500/40",
-            "text-red-400", "border-red-500/40",
-            "text-on-surface-variant", "border-[#1F1F1F]"
-        );
+            const pullDistance = 60;
 
-        if (type === "success") {
-            fileStatus.classList.add("text-green-400", "border-green-500/40");
-        } else if (type === "error") {
-            fileStatus.classList.add("text-red-400", "border-red-500/40");
-        } else {
-            fileStatus.classList.add("text-on-surface-variant", "border-[#1F1F1F]");
-        }
-    }
 
-    function enableStartButton() {
-        startButton.disabled = false;
-        startButton.classList.remove(
-            "bg-[#161616]", "text-[#444]", "border-[#1F1F1F]", "cursor-not-allowed"
-        );
-        startButton.classList.add(
-            "bg-accent", "text-[#0A0A0A]", "border-accent",
-            "cursor-pointer", "hover:scale-[0.98]", "hover:shadow-[0_0_25px_rgba(37,211,102,0.18)]"
-        );
-    }
+            // ===============================
+            // THEME TOGGLE
+            // ===============================
 
-    function disableStartButton() {
-        startButton.disabled = true;
-        startButton.classList.add(
-            "bg-[#161616]", "text-[#444]", "border-[#1F1F1F]", "cursor-not-allowed"
-        );
-        startButton.classList.remove(
-            "bg-accent", "text-[#0A0A0A]", "border-accent",
-            "cursor-pointer", "hover:scale-[0.98]", "hover:shadow-[0_0_25px_rgba(37,211,102,0.18)]"
-        );
-    }
+            function toggleTheme() {
 
-    function validateFile(file) {
-        if (!file) return false;
+                const root = document.documentElement;
 
-        const isTxt =
-            file.type === "text/plain" ||
-            file.name.toLowerCase().endsWith(".txt");
+                if (root.classList.contains("dark")) {
 
-        if (!isTxt) {
-            selectedFile = null;
-            disableStartButton();
-            setStatus("✕ Please select a .txt WhatsApp export.", "error");
-            uploadTitle.textContent = "Drop your .txt file here";
-            uploadSubtitle.textContent = "or click to browse files";
-            return false;
-        }
+                    root.classList.remove("dark");
 
-        selectedFile = file;
-        enableStartButton();
+                    localStorage.setItem("whatstat_theme", "light");
 
-        uploadTitle.textContent = file.name;
-        uploadSubtitle.textContent = "WhatsApp chat file selected";
+                } else {
 
-        setStatus("✓ Valid .txt file selected", "success");
+                    root.classList.add("dark");
 
-        dropzone.classList.add("border-accent");
-        uploadIcon.classList.add("bg-accent/10");
-
-        return true;
-    }
-
-    function handleFiles(files) {
-        if (files && files.length > 0) {
-            validateFile(files[0]);
-        }
-    }
-
-    // Click the dropzone to open the native file picker.
-    dropzone.addEventListener("click", () => fileInput.click());
-
-    // Keyboard accessibility.
-    dropzone.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            fileInput.click();
-        }
-    });
-
-    fileInput.addEventListener("change", (event) => {
-        handleFiles(event.target.files);
-    });
-
-    // Drag and drop.
-    ["dragenter", "dragover"].forEach(eventName => {
-        dropzone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropzone.classList.add("border-accent", "bg-[#0D160F]");
-        });
-    });
-
-    ["dragleave", "drop"].forEach(eventName => {
-        dropzone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropzone.classList.remove("bg-[#0D160F]");
-
-            if (eventName === "dragleave") {
-                if (!selectedFile) dropzone.classList.remove("border-accent");
+                    localStorage.setItem("whatstat_theme", "dark");
+                }
             }
-        });
-    });
 
-    dropzone.addEventListener("drop", (event) => {
-        handleFiles(event.dataTransfer.files);
-    });
 
-    // Keep the button safe for now: this only proves the frontend upload flow.
-    // We will connect this click to Flask/backend analysis next.
-    const analysisScreen = document.getElementById("analysisScreen");
-    const analysisSteps = document.getElementById("analysisSteps");
-    const processingTitle = document.getElementById("processingTitle");
-    const processingSubtitle = document.getElementById("processingSubtitle");
-    const overallProgress = document.getElementById("overallProgress");
-    const progressPercent = document.getElementById("progressPercent");
-    const progressLine = document.getElementById("progressLine");
-    const analysisComplete = document.getElementById("analysisComplete");
-    const processingFooter = document.getElementById("processingFooter");
+            // ===============================
+            // RESTORE SAVED THEME
+            // ===============================
 
-    const analysisStages = [
-        {
-            icon: "upload_file",
-            title: "Data fetched",
-            subtitle: "Reading and validating your WhatsApp export",
-        },
-        {
-            icon: "analytics",
-            title: "Chat analyzed",
-            subtitle: "Processing messages, users, emojis, words and activity",
-        },
-        {
-            icon: "insights",
-            title: "Insights ready",
-            subtitle: "Preparing your final visualizations",
-        },
-    ]
+            const savedTheme = localStorage.getItem("whatstat_theme");
 
-    function renderAnalysisSteps() {
-        analysisSteps.innerHTML = analysisStages.map((stage, index) => `
+            if (savedTheme === "dark") {
+
+                document.documentElement.classList.add("dark");
+
+            } else {
+
+                document.documentElement.classList.remove("dark");
+            }
+
+
+            // ===============================
+            // MOUSE DOWN
+            // ===============================
+
+            ball.addEventListener("mousedown", (e) => {
+
+                dragging = true;
+
+                startY = e.clientY;
+
+                ball.style.transition = "none";
+
+                e.preventDefault();
+            });
+
+
+            // ===============================
+            // MOUSE MOVE
+            // ===============================
+
+            document.addEventListener("mousemove", (e) => {
+
+                if (!dragging) return;
+
+                const distance = e.clientY - startY;
+
+                // Only allow downward movement
+                const pull = Math.max(0, Math.min(distance, pullDistance));
+
+                ball.style.transform = `translateY(${pull}px)`;
+            });
+
+
+            // ===============================
+            // MOUSE UP
+            // ===============================
+
+            document.addEventListener("mouseup", (e) => {
+
+                if (!dragging) return;
+
+                dragging = false;
+
+                const distance = e.clientY - startY;
+
+                // Reset animation
+                ball.style.transition =
+                    "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
+
+                ball.style.transform = "translateY(0)";
+
+                // Toggle only if pulled far enough
+                if (distance >= pullDistance) {
+
+                    toggleTheme();
+                }
+            });
+
+
+            // ===============================
+            // TOUCH START
+            // ===============================
+
+            ball.addEventListener("touchstart", (e) => {
+
+                dragging = true;
+
+                startY = e.touches[0].clientY;
+
+                ball.style.transition = "none";
+
+            }, { passive: true });
+
+
+            // ===============================
+            // TOUCH MOVE
+            // ===============================
+
+            document.addEventListener("touchmove", (e) => {
+
+                if (!dragging) return;
+
+                const distance = e.touches[0].clientY - startY;
+
+                const pull = Math.max(0, Math.min(distance, pullDistance));
+
+                ball.style.transform = `translateY(${pull}px)`;
+
+            }, { passive: true });
+
+
+            // ===============================
+            // TOUCH END
+            // ===============================
+
+            document.addEventListener("touchend", (e) => {
+
+                if (!dragging) return;
+
+                dragging = false;
+
+                const touch = e.changedTouches[0];
+
+                const distance = touch.clientY - startY;
+
+                ball.style.transition =
+                    "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
+
+                ball.style.transform = "translateY(0)";
+
+                if (distance >= pullDistance) {
+
+                    toggleTheme();
+                }
+            });
+            const fileInput = document.getElementById("chatFileInput");
+            const dropzone = document.getElementById("dropzone");
+            const startButton = document.getElementById("startAnalysisBtn");
+            const fileStatus = document.getElementById("fileStatus");
+            const uploadTitle = document.getElementById("uploadTitle");
+            const uploadSubtitle = document.getElementById("uploadSubtitle");
+            const uploadIcon = document.getElementById("uploadIcon");
+
+            let selectedFile = null;
+
+            function setStatus(message, type = "neutral") {
+                fileStatus.classList.remove("hidden");
+                fileStatus.textContent = message;
+
+                fileStatus.classList.remove(
+                    "text-green-400", "border-green-500/40",
+                    "text-red-400", "border-red-500/40",
+                    "text-on-surface-variant", "border-[#1F1F1F]"
+                );
+
+                if (type === "success") {
+                    fileStatus.classList.add("text-green-400", "border-green-500/40");
+                } else if (type === "error") {
+                    fileStatus.classList.add("text-red-400", "border-red-500/40");
+                } else {
+                    fileStatus.classList.add("text-on-surface-variant", "border-[#1F1F1F]");
+                }
+            }
+
+            function enableStartButton() {
+                startButton.disabled = false;
+                startButton.classList.remove(
+                    "bg-[#161616]", "text-[#444]", "border-[#1F1F1F]", "cursor-not-allowed"
+                );
+                startButton.classList.add(
+                    "bg-accent", "text-[#0A0A0A]", "border-accent",
+                    "cursor-pointer", "hover:scale-[0.98]", "hover:shadow-[0_0_25px_rgba(37,211,102,0.18)]"
+                );
+            }
+
+            function disableStartButton() {
+                startButton.disabled = true;
+                startButton.classList.add(
+                    "bg-[#161616]", "text-[#444]", "border-[#1F1F1F]", "cursor-not-allowed"
+                );
+                startButton.classList.remove(
+                    "bg-accent", "text-[#0A0A0A]", "border-accent",
+                    "cursor-pointer", "hover:scale-[0.98]", "hover:shadow-[0_0_25px_rgba(37,211,102,0.18)]"
+                );
+            }
+
+            function validateFile(file) {
+                if (!file) return false;
+
+                const isTxt =
+                    file.type === "text/plain" ||
+                    file.name.toLowerCase().endsWith(".txt");
+
+                if (!isTxt) {
+                    selectedFile = null;
+                    disableStartButton();
+                    setStatus("✕ Please select a .txt WhatsApp export.", "error");
+                    uploadTitle.textContent = "Drop your .txt file here";
+                    uploadSubtitle.textContent = "or click to browse files";
+                    return false;
+                }
+
+                selectedFile = file;
+                enableStartButton();
+
+                uploadTitle.textContent = file.name;
+                uploadSubtitle.textContent = "WhatsApp chat file selected";
+
+                setStatus("✓ Valid .txt file selected", "success");
+
+                dropzone.classList.add("border-accent");
+                uploadIcon.classList.add("bg-accent/10");
+
+                return true;
+            }
+
+            function handleFiles(files) {
+                if (files && files.length > 0) {
+                    validateFile(files[0]);
+                }
+            }
+
+            // Click the dropzone to open the native file picker.
+            dropzone.addEventListener("click", () => fileInput.click());
+
+            // Keyboard accessibility.
+            dropzone.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileInput.click();
+                }
+            });
+
+            fileInput.addEventListener("change", (event) => {
+                handleFiles(event.target.files);
+            });
+
+            // Drag and drop.
+            ["dragenter", "dragover"].forEach(eventName => {
+                dropzone.addEventListener(eventName, (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    dropzone.classList.add("border-accent", "bg-[#0D160F]");
+                });
+            });
+
+            ["dragleave", "drop"].forEach(eventName => {
+                dropzone.addEventListener(eventName, (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    dropzone.classList.remove("bg-[#0D160F]");
+
+                    if (eventName === "dragleave") {
+                        if (!selectedFile) dropzone.classList.remove("border-accent");
+                    }
+                });
+            });
+
+            dropzone.addEventListener("drop", (event) => {
+                handleFiles(event.dataTransfer.files);
+            });
+
+            // Keep the button safe for now: this only proves the frontend upload flow.
+            // We will connect this click to Flask/backend analysis next.
+            const analysisScreen = document.getElementById("analysisScreen");
+            const analysisSteps = document.getElementById("analysisSteps");
+            const processingTitle = document.getElementById("processingTitle");
+            const processingSubtitle = document.getElementById("processingSubtitle");
+            const overallProgress = document.getElementById("overallProgress");
+            const progressPercent = document.getElementById("progressPercent");
+            const progressLine = document.getElementById("progressLine");
+            const analysisComplete = document.getElementById("analysisComplete");
+            const processingFooter = document.getElementById("processingFooter");
+
+            const analysisStages = [
+                {
+                    icon: "upload_file",
+                    title: "Data fetched",
+                    subtitle: "Reading and validating your WhatsApp export",
+                },
+                {
+                    icon: "analytics",
+                    title: "Chat analyzed",
+                    subtitle: "Processing messages, users, emojis, words and activity",
+                },
+                {
+                    icon: "insights",
+                    title: "Insights ready",
+                    subtitle: "Preparing your final visualizations",
+                },
+            ]
+
+            function renderAnalysisSteps() {
+                analysisSteps.innerHTML = analysisStages.map((stage, index) => `
             <div id="analysisStep-${index}"
-                 class="relative flex items-center gap-5 p-5 rounded-xl border border-[#171717] bg-[#0A0A0A] opacity-45 transition-all duration-500">
+                 class="relative flex items-center gap-5 p-5 rounded-xl border border-gray-200 dark:border-[#171717] bg-white dark:bg-[#0A0A0A] opacity-45 transition-all duration-500">
                 <div id="stepIcon-${index}"
-                     class="relative z-10 shrink-0 w-12 h-12 rounded-full border border-[#292929] bg-[#111111] flex items-center justify-center transition-all duration-500">
-                    <span class="material-symbols-outlined text-[#626B63] transition-colors duration-500">${stage.icon}</span>
+                     class="relative z-10 shrink-0 w-12 h-12 rounded-full border border-gray-200 dark:border-[#292929] bg-gray-50 dark:bg-[#111111] flex items-center justify-center transition-all duration-500">
+                    <span class="material-symbols-outlined text-gray-400 dark:text-[#626B63] transition-colors duration-500">${stage.icon}</span>
                 </div>
 
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-3">
-                        <h3 class="font-semibold text-lg">${stage.title}</h3>
+                        <h3 class="font-semibold text-lg text-gray-900 dark:text-white">${stage.title}</h3>
                         <span id="stepCheck-${index}"
                               class="hidden material-symbols-outlined text-[#25D366] text-xl">check_circle</span>
                     </div>
-                    <p class="text-sm text-[#707970] mt-1">${stage.subtitle}</p>
+                    <p class="text-sm text-gray-500 dark:text-[#707970] mt-1">${stage.subtitle}</p>
                 </div>
 
                 <div id="stepArrow-${index}"
@@ -885,202 +1166,210 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `).join("");
-    }
+            }
 
-    function activateStep(index) {
-        const step = document.getElementById(`analysisStep-${index}`);
-        const icon = document.getElementById(`stepIcon-${index}`);
-        const check = document.getElementById(`stepCheck-${index}`);
-        const arrow = document.getElementById(`stepArrow-${index}`);
+            function activateStep(index) {
+                const step = document.getElementById(`analysisStep-${index}`);
+                const icon = document.getElementById(`stepIcon-${index}`);
+                const check = document.getElementById(`stepCheck-${index}`);
+                const arrow = document.getElementById(`stepArrow-${index}`);
 
-        step.classList.remove("opacity-45");
-        step.classList.add(
-            "opacity-100",
-            "border-[#25D366]/30",
-            "bg-[#0C120E]",
-            "shadow-[0_0_30px_rgba(37,211,102,0.05)]"
-        );
+                step.classList.remove("opacity-45");
+                step.classList.add(
+                    "opacity-100",
+                    "border-[#25D366]/30",
+                    "bg-green-50",
+                    "dark:bg-[#0C120E]",
+                    "shadow-[0_0_30px_rgba(37,211,102,0.05)]"
+                );
 
-        icon.classList.remove("border-[#292929]", "bg-[#111111]");
-        icon.classList.add("border-[#25D366]/50", "bg-[#25D366]/10");
+                icon.classList.remove("border-gray-200", "dark:border-[#292929]", "bg-gray-50", "dark:bg-[#111111]");
+                icon.classList.add("border-[#25D366]/50", "bg-[#25D366]/10");
 
-        const iconSpan = icon.querySelector("span");
-        iconSpan.classList.remove("text-[#626B63]");
-        iconSpan.classList.add("text-[#25D366]");
+                const iconSpan = icon.querySelector("span");
+                iconSpan.classList.remove("text-gray-400", "dark:text-[#626B63]");
+                iconSpan.classList.add("text-[#25D366]");
 
-        if (index > 0) {
-            const previousCheck = document.getElementById(`stepCheck-${index - 1}`);
-            const previousArrow = document.getElementById(`stepArrow-${index - 1}`);
-            previousCheck.classList.remove("hidden");
-            previousArrow.classList.remove("hidden");
-        }
-    }
+                if (index > 0) {
+                    const previousCheck = document.getElementById(`stepCheck-${index - 1}`);
+                    const previousArrow = document.getElementById(`stepArrow-${index - 1}`);
+                    previousCheck.classList.remove("hidden");
+                    previousArrow.classList.remove("hidden");
+                }
+            }
 
-    function completeStep(index) {
-        const step = document.getElementById(`analysisStep-${index}`);
-        const check = document.getElementById(`stepCheck-${index}`);
+            function completeStep(index) {
+                const step = document.getElementById(`analysisStep-${index}`);
+                const check = document.getElementById(`stepCheck-${index}`);
 
-        step.classList.remove("border-[#25D366]/30", "bg-[#0C120E]");
-        step.classList.add("border-[#1F1F1F]", "bg-[#0A0A0A]");
-        check.classList.remove("hidden");
-    }
+                step.classList.remove("border-[#25D366]/30", "bg-green-50", "dark:bg-[#0C120E]", "shadow-[0_0_30px_rgba(37,211,102,0.05)]");
+                step.classList.add(
+                    "border-gray-200",
+                    "dark:border-[#1F1F1F]",
+                    "bg-white",
+                    "dark:bg-[#0A0A0A]"
+                );
+                check.classList.remove("hidden");
+            }
 
-    async function runAnalysisAnimation() {
-    analysisScreen.classList.remove("hidden");
-    document.body.classList.add("overflow-hidden");
+            async function runAnalysisAnimation() {
+                analysisScreen.classList.remove("hidden");
+                document.body.classList.add("overflow-hidden");
 
-    // Reset processing screen
-    renderAnalysisSteps();
-    analysisComplete.classList.add("hidden");
-    processingFooter.classList.remove("hidden");
+                // Reset processing screen
+                renderAnalysisSteps();
+                analysisComplete.classList.add("hidden");
+                processingFooter.classList.remove("hidden");
 
-    processingTitle.textContent = "Preparing your data...";
-    processingSubtitle.textContent = "Reading your WhatsApp conversation.";
+                processingTitle.textContent = "Preparing your data...";
+                processingSubtitle.textContent = "Reading your WhatsApp conversation.";
 
-    overallProgress.style.width = "0%";
-    progressPercent.textContent = "0%";
-    progressLine.style.height = "0%";
+                overallProgress.style.width = "0%";
+                progressPercent.textContent = "0%";
+                progressLine.style.height = "0%";
 
-    // Start the REAL backend analysis immediately.
-    const formData = new FormData();
-    formData.append("file", selectedFile);
+                // Start the REAL backend analysis immediately.
+                const formData = new FormData();
+                formData.append("file", selectedFile);
 
-    const analysisRequest = fetch("/api/analyze", {
-        method: "POST",
-        body: formData
-    }).then(async response => {
-        const data = await response.json();
+                const analysisRequest = fetch("/api/analyze", {
+                    method: "POST",
+                    body: formData
+                }).then(async response => {
+                    const data = await response.json();
 
-        if (!response.ok || !data.success) {
-            throw new Error(data.error || "Analysis failed");
-        }
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.error || "Analysis failed");
+                    }
 
-        return data;
-    });
+                    return data;
+                });
 
-    // Give the processing animation time to play while
-    // Flask performs the real calculations.
-    try {
-        await new Promise(resolve => setTimeout(resolve, 400));
+                // Give the processing animation time to play while
+                // Flask performs the real calculations.
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 400));
 
-        // STEP 1
-        activateStep(0);
+                    // STEP 1
+                    activateStep(0);
 
-        processingTitle.textContent = "Data fetched";
-        processingSubtitle.textContent =
-            "Reading and validating your WhatsApp export.";
+                    processingTitle.textContent = "Data fetched";
+                    processingSubtitle.textContent =
+                        "Reading and validating your WhatsApp export.";
 
-        overallProgress.style.width = "33%";
-        progressPercent.textContent = "33%";
-        progressLine.style.height = "33%";
+                    overallProgress.style.width = "33%";
+                    progressPercent.textContent = "33%";
+                    progressLine.style.height = "33%";
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 500));
 
-        // STEP 2
-        activateStep(1);
+                    // STEP 2
+                    activateStep(1);
 
-        processingTitle.textContent = "Chat analyzed";
-        processingSubtitle.textContent =
-            "Processing messages, users, emojis, words and activity.";
+                    processingTitle.textContent = "Chat analyzed";
+                    processingSubtitle.textContent =
+                        "Processing messages, users, emojis, words and activity.";
 
-        overallProgress.style.width = "66%";
-        progressPercent.textContent = "66%";
-        progressLine.style.height = "66%";
+                    overallProgress.style.width = "66%";
+                    progressPercent.textContent = "66%";
+                    progressLine.style.height = "66%";
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 500));
 
-        // STEP 3
-        activateStep(2);
+                    // STEP 3
+                    activateStep(2);
 
-        processingTitle.textContent = "Insights ready";
-        processingSubtitle.textContent =
-            "Preparing your final visualizations.";
+                    processingTitle.textContent = "Insights ready";
+                    processingSubtitle.textContent =
+                        "Preparing your final visualizations.";
 
-        overallProgress.style.width = "85%";
-        progressPercent.textContent = "85%";
-        progressLine.style.height = "85%";
+                    overallProgress.style.width = "85%";
+                    progressPercent.textContent = "85%";
+                    progressLine.style.height = "85%";
 
-        // IMPORTANT:
-        // Wait for Flask to ACTUALLY finish all calculations.
-        const data = await analysisRequest;
+                    // IMPORTANT:
+                    // Wait for Flask to ACTUALLY finish all calculations.
+                    const data = await analysisRequest;
 
-        // Backend is finished → mark everything complete
-        completeStep(2);
+                    // Backend is finished → mark everything complete
+                    completeStep(2);
 
-        overallProgress.style.width = "100%";
-        progressPercent.textContent = "100%";
-        progressLine.style.height = "100%";
+                    overallProgress.style.width = "100%";
+                    progressPercent.textContent = "100%";
+                    progressLine.style.height = "100%";
 
-        processingTitle.textContent = "Your analysis is ready.";
-        processingSubtitle.textContent =
-            "All conversation insights have been generated.";
+                    processingTitle.textContent = "Your analysis is ready.";
+                    processingSubtitle.textContent =
+                        "All conversation insights have been generated.";
 
-        processingFooter.classList.add("hidden");
-        analysisComplete.classList.remove("hidden");
+                    processingFooter.classList.add("hidden");
+                    analysisComplete.classList.remove("hidden");
 
-        // Small final pause so the user sees 100%
-        await new Promise(resolve => setTimeout(resolve, 500));
+                    // Small final pause so the user sees 100%
+                    await new Promise(resolve => setTimeout(resolve, 500));
 
-        // NOW open the real dashboard with the analysis ID
-        const analysisUrl = new URL(
-            "/analysis.html",
-            window.location.origin
-        );
+                    // NOW open the real dashboard with the analysis ID
+                    const analysisUrl = new URL(
+                        "/analysis.html",
+                        window.location.origin
+                    );
 
-        analysisUrl.searchParams.set("id", data.analysis_id);
+                    analysisUrl.searchParams.set("id", data.analysis_id);
 
-        // Save it as backup too
-        localStorage.setItem(
-            "whatstat_analysis_id",
-            data.analysis_id
-        );
+                    // Save it as backup too
+                    localStorage.setItem(
+                        "whatstat_analysis_id",
+                        data.analysis_id
+                    );
 
-        localStorage.setItem(
-            "whatstat_users",
-            JSON.stringify(data.users || ["Overall"])
-        );
+                    localStorage.setItem(
+                        "whatstat_users",
+                        JSON.stringify(data.users || ["Overall"])
+                    );
 
-        window.location.replace(analysisUrl.href);
+                    window.location.replace(analysisUrl.href);
 
-    } catch (error) {
-        console.error("WhatStat analysis failed:", error);
+                } catch (error) {
+                    console.error("WhatStat analysis failed:", error);
 
-        processingTitle.textContent = "Analysis failed";
-        processingSubtitle.textContent = error.message;
+                    processingTitle.textContent = "Analysis failed";
+                    processingSubtitle.textContent = error.message;
 
-        processingFooter.classList.remove("hidden");
+                    processingFooter.classList.remove("hidden");
 
-        progressPercent.textContent = "Error";
-        overallProgress.style.width = "0%";
-        progressLine.style.height = "0%";
-    }
-}
+                    progressPercent.textContent = "Error";
+                    overallProgress.style.width = "0%";
+                    progressLine.style.height = "0%";
+                }
+            }
 
-    startButton.addEventListener("click", () => {
-        if (!selectedFile) return;
-        runAnalysisAnimation();
-    });
+            startButton.addEventListener("click", () => {
+                if (!selectedFile) return;
+                runAnalysisAnimation();
+            });
 
-    
 
-    // Smooth-scroll for all internal # links.
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener("click", (event) => {
-            const targetId = link.getAttribute("href");
-            if (!targetId || targetId === "#") return;
 
-            const target = document.querySelector(targetId);
-            if (!target) return;
+            // Smooth-scroll for all internal # links.
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener("click", (event) => {
+                    const targetId = link.getAttribute("href");
+                    if (!targetId || targetId === "#") return;
 
-            event.preventDefault();
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+                    const target = document.querySelector(targetId);
+                    if (!target) return;
+
+                    event.preventDefault();
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
             });
         });
-    });
-});
-</script>
+    </script>
 
 
-</body></html>
+</body>
+
+</html>
