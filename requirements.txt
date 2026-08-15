@@ -1,3 +1,4 @@
 Flask
 pandas
-gunicornwordcloud==1.9.4
+gunicorn
+wordcloud==1.9.4
