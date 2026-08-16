@@ -60,24 +60,32 @@ def create_wordcloud(selected_user, df):
             seen.add(word)
             unique_words.append(word)
 
-        if len(unique_words) == 300:
+        if len(unique_words) == 200:
             break
 
     # Reverse again so their original order is maintained
     unique_words.reverse()
 
-    # Generate word cloud using only those 200 words
-    limited_text = " ".join(unique_words)
+    # 1. GUARDRAIL: Prevent a fatal crash if the user sent zero valid words
+    if not unique_words:
+        return None
 
+    # 2. FIX: Create artificial frequencies to bypass the CPU infinite-loop trap.
+    # This assigns the highest frequency to the most recent word, creating a 
+    # visual gradient that allows the collision algorithm to render instantly.
+    frequencies = {word: len(unique_words) - i for i, word in enumerate(unique_words)}
+
+    # 3. OPTIMIZATION: Reduce canvas size slightly to save RAM on Render's free tier
     wc = WordCloud(
-        width=1400,
-        height=800,
-        min_font_size=14,
+        width=800,
+        height=600,
+        min_font_size=10,
         max_words=200,
         background_color="white"
     )
 
-    df_wc = wc.generate(limited_text)
+    # 4. Use generate_from_frequencies instead of generate()
+    df_wc = wc.generate_from_frequencies(frequencies)
 
     return df_wc
 def most_common_words(selected_user, df):

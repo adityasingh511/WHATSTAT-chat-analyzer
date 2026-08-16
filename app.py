@@ -37,6 +37,9 @@ def make_wordcloud_base64(selected_user, df):
     try:
         image = helper.create_wordcloud(selected_user, df)
 
+        if image is None:
+            return None
+
         buffer = io.BytesIO()
         image.to_image().save(buffer, format="PNG")
         return base64.b64encode(buffer.getvalue()).decode("utf-8")
