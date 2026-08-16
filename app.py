@@ -170,6 +170,7 @@ def analyze():
     try:
         raw_data = uploaded_file.read().decode("utf-8")
         df = preprocessor.preprocessor(raw_data)
+        
 
         if df.empty:
             return jsonify({"error": "No WhatsApp messages were detected."}), 400

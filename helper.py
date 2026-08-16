@@ -37,10 +37,38 @@ def most_busy_users(df):
     
     
     return x,percentages
-def create_wordcloud(selected_user , df):
+def create_wordcloud(selected_user, df):
     if selected_user != "Overall":
-        df = df[df['user']==selected_user]
-    df = df[~df["message"].str.contains("Media omitted", case=False, na=False)]
+        df = df[df["user"] == selected_user]
+
+    df = df[~df["message"].str.contains(
+        "Media omitted", case=False, na=False
+    )]
+
+    # Combine messages
+    text = df["message"].str.cat(sep=" ")
+
+    # Get words from latest to oldest
+    words = re.findall(r"[A-Za-z]+", text.lower())
+
+    # Keep the latest 200 UNIQUE words
+    unique_words = []
+    seen = set()
+
+    for word in reversed(words):
+        if word not in seen:
+            seen.add(word)
+            unique_words.append(word)
+
+        if len(unique_words) == 300:
+            break
+
+    # Reverse again so their original order is maintained
+    unique_words.reverse()
+
+    # Generate word cloud using only those 200 words
+    limited_text = " ".join(unique_words)
+
     wc = WordCloud(
         width=1400,
         height=800,
@@ -48,7 +76,9 @@ def create_wordcloud(selected_user , df):
         max_words=200,
         background_color="white"
     )
-    df_wc = wc.generate(df['message'].str.cat(sep=" "))
+
+    df_wc = wc.generate(limited_text)
+
     return df_wc
 def most_common_words(selected_user, df):
 
